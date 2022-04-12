@@ -27,7 +27,7 @@ class Producto {
 
      let nombre = prompt("Ingrese su nombre:");
 
-                    /*si se ingresa un numero continua el while*/
+                    
      while (nombre === "" || !isNaN(parseInt(nombre))) { 
           nombre = prompt("Ingrese su nombre:");
      }
@@ -77,13 +77,13 @@ saludar();
      };
 
 
-            /* mostrar todos los productos que tengo en el CRRITO*/
+            
          const mostrarProductos = () => {
                const divCaja = document.createElement ("div");
                divCaja.className = "caja";
                container.appendChild(divCaja);
 
-               /* el MAP lo q hace es devolver un arreglo*/
+               
                let carrMap = carrito.map (
                      (e) => `<div>
                      <h4> ${e.nombre.toUpperCase()} </h4>
@@ -92,14 +92,16 @@ saludar();
                      <p> CANTIDAD: ${e.cantidad} </p>
                      </div>`
                );
-               divCaja.innerHTML = carrMap;
-
+               
+               divCaja.innerHTML = carrMap.join("");
+                
          };
 
            saludar();
            productoElegido = consultarProductos();
            llevarProducto();
-
+           mostrarProductos();
+           
 
 
 
