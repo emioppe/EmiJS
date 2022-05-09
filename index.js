@@ -1,111 +1,207 @@
-//----------------- desafio---------------//
 
-// funcion display de menus
-function abrirMenu(menu){
-    if(menu == "nuevoUsuario"){
-        document.querySelector("#menuUsuario").style.display = "none";
-        document.querySelector("#nuevoUsuario").style.display = "block";
-    } else if (menu == "buscarUsuario"){
-        document.querySelector("#menuUsuario").style.display = "none";
-        document.querySelector("#buscarUsuario").style.display = "block";
-    } else if (menu == "borrarUsuario"){
-        document.querySelector("#menuUsuario").style.display = "none";
-        document.querySelector("#borrarUsuario").style.display = "block";
-    } else {
-        document.querySelector("#borrarUsuario").style.display = "none";
-        document.querySelector("#buscarUsuario").style.display = "none";
-        document.querySelector("#nuevoUsuario").style.display = "none";
-        document.querySelector("#menuUsuario").style.display = "block";
+
+Toastify({
+    text: "Promociones",
+    duration: 50000,
+    className: "info",
+    style: {
+      background: "linear-gradient(to right, #00b09b, #96c93d)",
     }
+  }).showToast();
+
+
+       
+Swal.fire({
+     title:"Bienvenido!",
+     text:"No estoy loca",
     
-}
+    })
 
 
 
-// creamos array de personas
-const arrayPersonas = [];
-
-// Evento click nuevo usuario/cliente
-document.querySelector("#buscarCliente").addEventListener("click", () => abrirMenu("buscarUsuario"));
-// Evento click buscar usuario/cliente
-document.querySelector("#nuevoCliente").addEventListener("click", () => abrirMenu("nuevoUsuario"));
-// Evento click borrar usuario/cliente
-document.querySelector("#borrarCliente").addEventListener("click", () => abrirMenu("borrarUsuario"));
-
-
-// funcion nuevo usuario y control evento
-document.querySelector("#formNuevoUsuario").addEventListener("submit", nuevoUsuario);
-
-function nuevoUsuario (e){
-    // Paramos el envio del formulario submit
-    e.preventDefault();
-
-    //Recuperamos información de los inputs
-    const nombre = document.querySelector("#nombre").value;
-    const apellido = document.querySelector("#apellido").value;
-    const dni = document.querySelector("#dni").value;
-    const edad = document.querySelector("#edad").value;
-
-    //Creamos objeto persona
-    const persona = new Persona(nombre,apellido,dni,edad);
-
-    //Pushear en el array
-    arrayPersonas.push(persona);
-
-    //guardar el array en localstorage y convertirlo en JSON
-    localStorage.setItem("arrayPersonas", JSON.stringify(arrayPersonas));
-
-}
-
-
-// funcion buscar usuario
-document.querySelector("#formBuscarUsuario").addEventListener("submit", buscarUsuario);
-
-function buscarUsuario(e){
-    // Paramos el envio del formulario submit
-    e.preventDefault();
-
-    //Buscar información input DNI
-    const dniBuscar = document.querySelector("#dniBuscar").value;
-
-    //buscar en localstorage
-    const arrayParaBuscar = JSON.parse(localStorage.getItem("arrayPersonas"));
-    const resultadoBuscar = arrayParaBuscar.find(personita => personita.dni == dniBuscar);
-
-    let textoPersonaEncontrada;
-    if (resultadoBuscar != undefined){
-        textoPersonaEncontrada = `<h2>${resultadoBuscar.nombre} ${resultadoBuscar.apellido}</h2>`;
-        textoPersonaEncontrada += `<span>DNI: ${resultadoBuscar.dni}</span>` ;
-    }else{
-        textoPersonaEncontrada = "No hay ninguna coincidencia";
+// Variables
+const baseDeDatos = [
+    {
+        id: 1,
+        nombre: 'Cartera Chica',
+        precio: 3100,
+        imagen: 'img/cartera1.jpg'
+    },
+    {
+        id: 2,
+        nombre: 'Cartera Flecos',
+        precio: 3600,
+        imagen: 'img/cartera2.jpg'
+    },
+    {
+        id: 3,
+        nombre: 'Bolso Grande',
+        precio: 3500,
+        imagen: 'img/cartera3.jpg'
+    },
+    {
+        id: 4,
+        nombre: 'Accesorios',
+        precio: 1500,
+        imagen: 'img/cartera4.jpg'
     }
 
-    document.querySelector("#personaEncontrada").innerHTML = textoPersonaEncontrada;
+];
+
+let carrito = [];
+const divisa = '$';
+const DOMitems = document.querySelector('#items');
+const DOMcarrito = document.querySelector('#carrito');
+const DOMtotal = document.querySelector('#total');
+const DOMbotonVaciar = document.querySelector('#boton-vaciar');
+
+// Funciones
+
+/**
+ * Dibuja todos los productos a partir de la base de datos. No confundir con el carrito
+ */
+function renderizarProductos() {
+    baseDeDatos.forEach((info) => {
+        // Estructura
+        const miNodo = document.createElement('div');
+        miNodo.classList.add('card', 'col-sm-4');
+        // Body
+        const miNodoCardBody = document.createElement('div');
+        miNodoCardBody.classList.add('card-body');
+        // Titulo
+        const miNodoTitle = document.createElement('h5');
+        miNodoTitle.classList.add('card-title');
+        miNodoTitle.textContent = info.nombre;
+        // Imagen
+        const miNodoImagen = document.createElement('img');
+        miNodoImagen.classList.add('img-fluid');
+        miNodoImagen.setAttribute('src', info.imagen);
+        // Precio
+        const miNodoPrecio = document.createElement('p');
+        miNodoPrecio.classList.add('card-text');
+        miNodoPrecio.textContent = `${info.precio}${divisa}`;
+        // Boton 
+        const miNodoBoton = document.createElement('button');
+        miNodoBoton.classList.add('btn', 'btn-primary');
+        miNodoBoton.textContent = '+';
+        miNodoBoton.setAttribute('marcador', info.id);
+        miNodoBoton.addEventListener('click', anyadirProductoAlCarrito);
+        // Insertamos
+        miNodoCardBody.appendChild(miNodoImagen);
+        miNodoCardBody.appendChild(miNodoTitle);
+        miNodoCardBody.appendChild(miNodoPrecio);
+        miNodoCardBody.appendChild(miNodoBoton);
+        miNodo.appendChild(miNodoCardBody);
+        DOMitems.appendChild(miNodo);
+    });
 }
 
-
-// funcion borrar usuario submit
-document.querySelector("#formBorrarUsuario").addEventListener("submit", borrarUsuario);
-
-function borrarUsuario(e){
-    // Paramos el envio del formulario submit
-    e.preventDefault();
-
-    //Buscar la información del input DNI
-    const dniBuscar = document.querySelector("#dniBorrar").value;
-
-    //buscamos en el localstorage
-    const arrayParaBuscar = JSON.parse(localStorage.getItem("arrayPersonas"));
-    const resultadoDNIBorrar = arrayParaBuscar.filter(personita => personita.dni != dniBuscar);
-
-    localStorage.setItem("arrayPersonas", JSON.stringify(resultadoDNIBorrar));
+/**
+ * Evento para añadir un producto al carrito de la compra
+ */
+function anyadirProductoAlCarrito(evento) {
+    // Anyadimos el Nodo a nuestro carrito
+    carrito.push(evento.target.getAttribute('marcador'))
+    // Actualizamos el carrito 
+    renderizarCarrito();
 
 }
 
+/**
+ * Dibuja todos los productos guardados en el carrito
+ */
+function renderizarCarrito() {
+    // Vaciamos todo el html
+    DOMcarrito.textContent = '';
+    // Quitamos los duplicados
+    const carritoSinDuplicados = [...new Set(carrito)];
+    // Generamos los Nodos a partir de carrito
+    carritoSinDuplicados.forEach((item) => {
+        // Obtenemos el item que necesitamos de la variable base de datos
+        const miItem = baseDeDatos.filter((itemBaseDatos) => {
+            // ¿Coincide las id? Solo puede existir un caso
+            return itemBaseDatos.id === parseInt(item);
+        });
+        // Cuenta el número de veces que se repite el producto
+        const numeroUnidadesItem = carrito.reduce((total, itemId) => {
+            // ¿Coincide las id? Incremento el contador, en caso contrario no mantengo
+            return itemId === item ? total += 1 : total;
+        }, 0);
+        // Creamos el nodo del item del carrito
+        const miNodo = document.createElement('li');
+        miNodo.classList.add('list-group-item', 'text-right', 'mx-2');
+        miNodo.textContent = `${numeroUnidadesItem} x ${miItem[0].nombre} - ${miItem[0].precio}${divisa}`;
+        // Boton de borrar
+        const miBoton = document.createElement('button');
+        miBoton.classList.add('btn', 'btn-danger', 'mx-5');
+        miBoton.textContent = 'X';
+        miBoton.style.marginLeft = '1rem';
+        miBoton.dataset.item = item;
+        miBoton.addEventListener('click', borrarItemCarrito);
+        // Mezclamos nodos
+        miNodo.appendChild(miBoton);
+        DOMcarrito.appendChild(miNodo);
+    });
+    // Renderizamos el precio total en el HTML
+    DOMtotal.textContent = calcularTotal();
+}
 
-// flecha volver al menu
-const flechas = document.querySelectorAll(".flecha");
+/**
+ * Evento para borrar un elemento del carrito
+ */
+function borrarItemCarrito(evento) {
+    // Obtenemos el producto ID que hay en el boton pulsado
+    const id = evento.target.dataset.item;
+    // Borramos todos los productos
+    carrito = carrito.filter((carritoId) => {
+        return carritoId !== id;
+    });
+    // volvemos a renderizar
+    renderizarCarrito();
+}
 
-flechas.forEach(flecha => {
-    flecha.addEventListener("click", abrirMenu);
-});
+/**
+ * Calcula el precio total teniendo en cuenta los productos repetidos
+ */
+function calcularTotal() {
+    // Recorremos el array del carrito 
+    return carrito.reduce((total, item) => {
+        // De cada elemento obtenemos su precio
+        const miItem = baseDeDatos.filter((itemBaseDatos) => {
+            return itemBaseDatos.id === parseInt(item);
+        });
+        // Los sumamos al total
+        return total +  miItem[0].precio;
+    }, 0).toFixed(2);
+}
+
+/**
+ * Varia el carrito y vuelve a dibujarlo
+ */
+function vaciarCarrito() {
+    // Limpiamos los productos guardados
+    carrito = [];
+    // Renderizamos los cambios
+    renderizarCarrito();
+}
+
+// Eventos
+DOMbotonVaciar.addEventListener('click', vaciarCarrito);
+
+
+// Inicio
+renderizarProductos();
+renderizarCarrito();
+
+
+const dt = DateTime.fromObject(
+    { day: 22, hour: 12, month: 2 },
+    { zone: 'America/Buenos_Aires', numberingSystem: 'beng' }
+ )
+
+console.log( dt.toString() )
+// 2022-02-22T12:00:00.000-03:00
+
+
+
+

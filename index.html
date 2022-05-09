@@ -4,84 +4,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desafio</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <title> trabajo final </title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    
 </head>
 <body>
+     <header>
+           <div class="header">
+                 <h1>No estoy loca</h1>
+           </div>
+     </header>
     
-   <h1> PRE-ENTREGA N° 2 </h1>
-
-   <!-- Menú de usuario -->
-   <div id="menuUsuario">
-    <fieldset>
-        <legend>Menú usuario:</legend>
-        <div class="botones">
-            <a class="btn azul" id="buscarCliente">BUSCAR CLIENTE</a>
+    <div class="container">
+        <div class="row">
+            <!-- Elementos generados a partir del JSON -->
+            <main id="items" class="col-sm-8 row"></main>
+            <!-- Carrito -->
+            <aside class="col-sm-4">
+                <h2>Carrito</h2>
+                <!-- Elementos del carrito -->
+                <ul id="carrito" class="list-group"></ul>
+                <hr>
+                <!-- Precio total -->
+                <p class="text-right">Total: $ <span id="total"></span></p>
+                <button id="boton-vaciar" class="btn btn-danger">Vaciar</button>
+            </aside>
         </div>
-        <div class="botones">
-            <a class="btn verde" id="nuevoCliente">AÑADIR CLIENTE</a>
-        </div>
-        <div class="botones">
-            <a class="btn rojo" id="borrarCliente">BORRAR CLIENTE</a>
-        </div>
-    </fieldset>
-</div>
-
-<!-- Menú de nuevo usuario -->
-<div id="nuevoUsuario">
-    <a class="btnAtras flecha">⇚ Volver al menú</a>
-    <form id="formNuevoUsuario">
-        <fieldset>
-            <legend>Nuevo usuario:</legend>
-            <br><label for="nombre">Nombre:</label>
-            <input type="text" name="nombre" id="nombre"><br><br>
-            <label for="apellido">Apellido:</label>
-            <input type="text" name="apellido" id="apellido"><br><br>
-            <label for="dni">DNI:</label>
-            <input type="text" name="dni" id="dni"><br><br>
-            <label for="edad">Edad:</label>
-            <input type="date" name="edad" id="edad"><br><br>
-            <input type="submit" class="btn verde" id="nUser" value="Enviar">
-        </fieldset>
-    </form>
-</div>
-<!-- fin menú nuevo usuario -->
-
-<!-- Menú buscar usuario -->
-<div id="buscarUsuario">
-    <a class="btnAtras flecha">⇚ Volver al menú</a>
-    <form id="formBuscarUsuario">
-        <fieldset>
-            <legend>Buscar usuario:</legend>
-            <br><label for="dniBuscar">DNI:</label>
-            <input type="text" name="dniBuscar" id="dniBuscar"><hr><br>
-            <div id="personaEncontrada"></div>
-            <input type="submit" class="btn verde" value="Buscar">
-        </fieldset>
-    </form>
-</div>
-<!-- fin menú buscar usuario -->
-
-<!-- borrar usuario -->
-<div id="borrarUsuario">
-    <a class="btnAtras flecha">⇚ Volver al menú</a>
-    <form id="formBorrarUsuario">
-        <fieldset>
-            <legend>Buscar cliente a borrar:</legend>
-            <br><label for="dniBorrar">DNI:</label>
-            <input type="text" name="dniBuscar" id="dniBorrar">
-            <input type="button" id="buscar" value="🔍︎"><hr><br>
-            <div id="personaEncontradaBorrar"></div>
-            <input type="submit" class="btn rojo" value="Borrar">
-        </fieldset>
-    </form>
-</div>
-<!-- fin borrar usuario -->
+    </div>
 
 
-<script src="persona.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@2.3.0/build/global/luxon.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="index.js"></script>
 
-    
+
 </body>
 </html>
