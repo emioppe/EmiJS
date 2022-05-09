@@ -57,9 +57,7 @@ const DOMbotonVaciar = document.querySelector('#boton-vaciar');
 
 // Funciones
 
-/**
- * Dibuja todos los productos a partir de la base de datos. No confundir con el carrito
- */
+
 function renderizarProductos() {
     baseDeDatos.forEach((info) => {
         // Estructura
@@ -86,7 +84,7 @@ function renderizarProductos() {
         miNodoBoton.textContent = '+';
         miNodoBoton.setAttribute('marcador', info.id);
         miNodoBoton.addEventListener('click', anyadirProductoAlCarrito);
-        // Insertamos
+        // Insertar
         miNodoCardBody.appendChild(miNodoImagen);
         miNodoCardBody.appendChild(miNodoTitle);
         miNodoCardBody.appendChild(miNodoPrecio);
@@ -100,18 +98,18 @@ function renderizarProductos() {
  * Evento para añadir un producto al carrito de la compra
  */
 function anyadirProductoAlCarrito(evento) {
-    // Anyadimos el Nodo a nuestro carrito
+    // Aniadir el Nodo al carrito
     carrito.push(evento.target.getAttribute('marcador'))
-    // Actualizamos el carrito 
+    // Actualizar el carrito 
     renderizarCarrito();
 
 }
 
 /**
- * Dibuja todos los productos guardados en el carrito
+  productos guardados en el carrito
  */
 function renderizarCarrito() {
-    // Vaciamos todo el html
+    // Vaciar todo el html
     DOMcarrito.textContent = '';
     // Quitamos los duplicados
     const carritoSinDuplicados = [...new Set(carrito)];
@@ -194,13 +192,7 @@ renderizarProductos();
 renderizarCarrito();
 
 
-const dt = DateTime.fromObject(
-    { day: 22, hour: 12, month: 2 },
-    { zone: 'America/Buenos_Aires', numberingSystem: 'beng' }
- )
 
-console.log( dt.toString() )
-// 2022-02-22T12:00:00.000-03:00
 
 
 
